@@ -1,5 +1,8 @@
 package com.hvdoc.schools;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Pete on 10/8/2015.
  */
@@ -12,6 +15,9 @@ public class School {
     private String mState;
     private String mZip;
     private String mPhone;
+    private List<Teacher> mTeachers = new ArrayList<Teacher>();
+    private List<Student> mStudents = new ArrayList<Student>();
+    private List<Section> mSections = new ArrayList<Section>();
 
     public School() {
 
@@ -80,5 +86,34 @@ public class School {
     public void setZip(String mZip) {
         this.mZip = mZip;
     }
+
+    public List<Teacher> getTeachers() {
+        return mTeachers;
+    }
+
+    public void addTeacher(Teacher teacher) {
+        mTeachers.add(teacher);
+    }
+
+    public Teacher getTeacher(int id) {
+        for (Teacher teacher : mTeachers) {
+            if (teacher.getId() == id) {
+                return teacher;
+            }
+        }
+        return null;
+    }
+
+    public List<Student> getStudents() {
+        return mStudents;
+    }
+
+    public void addStudent(Student student) {
+        mStudents.add(student);
+    }
+
+    public List<Section> getSections() { return mSections; }
+
+    public void addSection(Section section) { mSections.add(section); }
 
 }

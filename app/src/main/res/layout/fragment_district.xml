@@ -1,8 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/school_recycler_view"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-</android.support.v7.widget.RecyclerView>
+    android:layout_height="match_parent"
+    android:padding="16dp">
+    <TextView
+        android:id="@+id/name_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name"/>
+    <TextView
+        android:id="@+id/superintendent_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Superintendent"/>
+    <TextView
+        android:id="@+id/address_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Address"/>
+    <TextView
+        android:id="@+id/phone_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Phone"/>
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp">
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>

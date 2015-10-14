@@ -15,55 +15,73 @@ import java.util.List;
 /**
  * Created by Pete on 10/8/2015.
  */
-public class SchoolListFragment extends Fragment {
+public class DistrictFragment extends Fragment {
 
-    private RecyclerView mSchoolRecyclerView;
+    private TextView mNameTextView;
+    private TextView mSuperintendentTextView;
+    private TextView mAddressTextView;
+    private TextView mPhoneTextView;
+    private RecyclerView mDistrictRecyclerView;
     private SchoolAdapter mAdapter;
-    private School mSchool;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_district, container, false);
 
-        mSchoolRecyclerView = (RecyclerView) v.findViewById(R.id.school_recycler_view);
-        mSchoolRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mNameTextView = (TextView) v.findViewById(R.id.name_text_view);
+        mSuperintendentTextView = (TextView) v.findViewById(R.id.superintendent_text_view);
+        mAddressTextView = (TextView) v.findViewById(R.id.address_text_view);
+        mPhoneTextView = (TextView) v.findViewById(R.id.phone_text_view);
+        mDistrictRecyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
+        mDistrictRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         updateUI();
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
     private void updateUI() {
         District district = District.get(getActivity());
+
+        mNameTextView.setText(district.getName());
+        mSuperintendentTextView.setText("Superintendent: " + district.getSuperintendent());
+        mAddressTextView.setText("Address: " + district.getAddress() + ", " + district.getCity() + ", " + district.getState() + " " + district.getZip());
+        mPhoneTextView.setText("Phone: " + district.getPhone());
+
         List<School> schools = district.getSchools();
 
-        mAdapter = new SchoolAdapter(schools);
-        mSchoolRecyclerView.setAdapter(mAdapter);
+        if (mAdapter == null) {
+            mAdapter = new SchoolAdapter(schools);
+            mDistrictRecyclerView.setAdapter(mAdapter);
+        }
+        else {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     private class SchoolHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mNameTextView;
-        private TextView mPrincipalTextView;
-
         private School mSchool;
 
         public void bindSchool(School school)
         {
             mSchool = school;
             mNameTextView.setText(mSchool.getName());
-            mPrincipalTextView.setText(mSchool.getPrincipal());
         }
         public SchoolHolder(View itemView) {
             super(itemView);
-
             itemView.setOnClickListener(this);
-
             mNameTextView = (TextView) itemView.findViewById(R.id.list_item_school_name);
-            mPrincipalTextView = (TextView) itemView.findViewById(R.id.list_item_school_principal);
         }
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getActivity(), SchoolActivity.class);
+            Intent intent = SchoolPagerActivity.newIntent(getActivity(), mSchool.getId());
             startActivity(intent);
         }
 

@@ -9,11 +9,7 @@
         android:id="@+id/list_item_school_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:text="Hello"/>
-    <TextView
-        android:id="@+id/list_item_school_principal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="World"/>
 
 </LinearLayout>
