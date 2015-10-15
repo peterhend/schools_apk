@@ -1,15 +1,29 @@
 package com.hvdoc.schools;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 /**
@@ -19,10 +33,82 @@ public class DistrictFragment extends Fragment {
 
     private TextView mNameTextView;
     private TextView mSuperintendentTextView;
+
     private TextView mAddressTextView;
     private TextView mPhoneTextView;
     private RecyclerView mDistrictRecyclerView;
     private SchoolAdapter mAdapter;
+
+    private District mDistrict;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mDistrict = District.get(getActivity());
+        new HttpAsyncTask().execute("http://peterhend.pythonanywhere.com/districts/1/JSON");
+    }
+
+    public static String GET(String url){
+        InputStream inputStream = null;
+        String result = "";
+        try {
+
+            // create HttpClient
+            HttpClient httpclient = new DefaultHttpClient();
+
+            // make GET request to the given URL
+            HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
+
+            // receive response as inputStream
+            inputStream = httpResponse.getEntity().getContent();
+
+            // convert inputstream to string
+            if(inputStream != null)
+                result = convertInputStreamToString(inputStream);
+            else
+                result = "Did not work!";
+
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+
+        return result;
+    }
+
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
+
+    }
+
+//    public boolean isConnected(){
+//        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+//        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+//        if (networkInfo != null && networkInfo.isConnected())
+//            return true;
+//        else
+//            return false;
+//    }
+
+    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+
+            return GET(urls[0]);
+        }
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            createObjectsFromJSON(result);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,23 +131,59 @@ public class DistrictFragment extends Fragment {
         updateUI();
     }
 
+    private void createObjectsFromJSON(String jsonString) {
+        try {
+            JSONObject json = new JSONObject(jsonString);
+            JSONObject district = json.getJSONObject("District");
+            //mDistrict = new SchoolDistrict();
+            mDistrict.setName(district.getString("name"));
+            mDistrict.setSuperintendent(district.getString("superintendent"));
+            mDistrict.setAddress(district.getString("address"));
+            mDistrict.setCity(district.getString("city"));
+            mDistrict.setState(district.getString("state"));
+            mDistrict.setZip(district.getString("zip"));
+            mDistrict.setPhone(district.getString("phone"));
+            JSONArray schools = district.getJSONArray("schools");
+            for (int i = 0; i < schools.length(); i++) {
+                JSONObject jSchool = schools.getJSONObject(i);
+                School school = new School();
+                school.setId(i);
+                school.setName(jSchool.getString("name"));
+                school.setPrincipal(jSchool.getString("principal"));
+                school.setAddress(jSchool.getString("address"));
+                school.setCity(jSchool.getString("city"));
+                school.setState(jSchool.getString("state"));
+                school.setZip(jSchool.getString("zip"));
+                school.setPhone(jSchool.getString("phone"));
+                mDistrict.addSchool(school);
+            }
+            updateUI();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void updateUI() {
+        List<School> schools = null;
         District district = District.get(getActivity());
 
-        mNameTextView.setText(district.getName());
-        mSuperintendentTextView.setText("Superintendent: " + district.getSuperintendent());
-        mAddressTextView.setText("Address: " + district.getAddress() + ", " + district.getCity() + ", " + district.getState() + " " + district.getZip());
-        mPhoneTextView.setText("Phone: " + district.getPhone());
+        if (mDistrict != null) {
+            mNameTextView.setText(mDistrict.getName());
+            mSuperintendentTextView.setText("Superintendent: " + mDistrict.getSuperintendent());
+            mAddressTextView.setText(mDistrict.getAddress() + ", " + mDistrict.getCity() + ", " + mDistrict.getState() + " " + mDistrict.getZip());
+            mPhoneTextView.setText(mDistrict.getPhone());
+            schools = mDistrict.getSchools();
 
-        List<School> schools = district.getSchools();
+            if (mAdapter == null) {
+                mAdapter = new SchoolAdapter(schools);
+                mDistrictRecyclerView.setAdapter(mAdapter);
+            }
+            else {
+                mAdapter.notifyDataSetChanged();
+            }
+        }
 
-        if (mAdapter == null) {
-            mAdapter = new SchoolAdapter(schools);
-            mDistrictRecyclerView.setAdapter(mAdapter);
-        }
-        else {
-            mAdapter.notifyDataSetChanged();
-        }
+
     }
 
     private class SchoolHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
