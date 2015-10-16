@@ -46,7 +46,9 @@ public class DistrictFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mDistrict = District.get(getActivity());
-        new HttpAsyncTask().execute("http://peterhend.pythonanywhere.com/districts/1/JSON");
+        if (mDistrict.getSchools().size() == 0) {
+            new HttpAsyncTask().execute("http://peterhend.pythonanywhere.com/districts/1/JSON");
+        }
     }
 
     public static String GET(String url){
@@ -135,7 +137,6 @@ public class DistrictFragment extends Fragment {
         try {
             JSONObject json = new JSONObject(jsonString);
             JSONObject district = json.getJSONObject("District");
-            //mDistrict = new SchoolDistrict();
             mDistrict.setName(district.getString("name"));
             mDistrict.setSuperintendent(district.getString("superintendent"));
             mDistrict.setAddress(district.getString("address"));
@@ -146,8 +147,7 @@ public class DistrictFragment extends Fragment {
             JSONArray schools = district.getJSONArray("schools");
             for (int i = 0; i < schools.length(); i++) {
                 JSONObject jSchool = schools.getJSONObject(i);
-                School school = new School();
-                school.setId(i);
+                School school = new School(Integer.parseInt(jSchool.getString("id").toString()));
                 school.setName(jSchool.getString("name"));
                 school.setPrincipal(jSchool.getString("principal"));
                 school.setAddress(jSchool.getString("address"));
@@ -165,7 +165,7 @@ public class DistrictFragment extends Fragment {
 
     private void updateUI() {
         List<School> schools = null;
-        District district = District.get(getActivity());
+        //District district = District.get(getActivity());
 
         if (mDistrict != null) {
             mNameTextView.setText(mDistrict.getName());

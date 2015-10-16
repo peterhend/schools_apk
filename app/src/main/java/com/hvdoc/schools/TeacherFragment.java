@@ -40,7 +40,7 @@ public class TeacherFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_teacher, container, false);
         mNameTextView = (TextView)v.findViewById(R.id.teacher_name_text_view);
-        mNameTextView.setText(mTeacher.getName());
+        mNameTextView.setText(mTeacher.getLastName() + ", " + mTeacher.getFirstName());
         return v;
     }
 

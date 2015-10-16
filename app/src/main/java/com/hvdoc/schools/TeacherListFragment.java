@@ -21,6 +21,7 @@ public class TeacherListFragment extends Fragment {
     private School mSchool;
     private List<Teacher> mTeachers;
 
+    private TextView mTextView;
     private RecyclerView mRecyclerView;
     private TeacherAdapter mTeacherAdapter;
 
@@ -38,12 +39,14 @@ public class TeacherListFragment extends Fragment {
         int schoolId = (int) getArguments().getSerializable(ARG_SCHOOL_ID);
         mSchool = District.get(getActivity()).getSchool(schoolId);
         mTeachers = mSchool.getTeachers();
-        getActivity().setTitle(mSchool.getName());
+        //getActivity().setTitle(mSchool.getName());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_teacher_list, container, false);
+//        mTextView = (TextView) view.findViewById(R.id.teacher_list_text_view);
+//        mTextView.setText("Teacher list for " + mSchool.getName());
         mRecyclerView = (RecyclerView) view.findViewById(R.id.teacher_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         loadList();
@@ -69,7 +72,7 @@ public class TeacherListFragment extends Fragment {
         public void bindTeacher(Teacher teacher)
         {
             mTeacher = teacher;
-            mNameTextView.setText(teacher.getName());
+            mNameTextView.setText(teacher.getLastName() + ", " + teacher.getFirstName());
             mDepartmentTextView.setText(teacher.getDepartment());
         }
 

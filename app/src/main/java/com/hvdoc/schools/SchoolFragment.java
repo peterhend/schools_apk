@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
@@ -37,12 +38,9 @@ public class SchoolFragment extends Fragment {
     private TextView mAddressTextView;
     private TextView mPhoneTextView;
     private TabLayout mTabLayout;
+    private FrameLayout mFrameLayout;
 
     private int mSelectedTab = 0;
-
-    private Fragment mTeacherListFragment;
-    private Fragment mStudentListFragment;
-    private Fragment mSectionListFragment;
 
     private FragmentManager fm;
 
@@ -61,10 +59,20 @@ public class SchoolFragment extends Fragment {
         mSchool = District.get(getActivity()).getSchool(schoolId);
 
         if (mSchool.getTeachers().size() == 0) {
-            new HttpAsyncTask().execute("http://peterhend.pythonanywhere.com/districts/1/schools/1/teachers/JSON");
+            new HttpAsyncTask().execute("http://peterhend.pythonanywhere.com/districts/1/schools/" + mSchool.getId() + "/teachers/JSON");
         }
 
-        fm = getActivity().getSupportFragmentManager();
+        if (mSchool.getStudents().size() == 0) {
+            new HttpAsyncTask().execute("http://peterhend.pythonanywhere.com/districts/1/schools/" + mSchool.getId() + "/students/JSON");
+        }
+
+        if (mSchool.getSections().size() == 0) {
+            new HttpAsyncTask().execute("http://peterhend.pythonanywhere.com/districts/1/schools/" + mSchool.getId() + "/sections/JSON");
+        }
+
+        if (fm == null) {
+            fm = getActivity().getSupportFragmentManager();
+        }
     }
 
     public static String GET(String url){
@@ -125,26 +133,56 @@ public class SchoolFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             createObjectsFromJSON(result);
+            loadListFragment(mSelectedTab);
         }
     }
 
     private void createObjectsFromJSON(String jsonString) {
         try {
             JSONObject json = new JSONObject(jsonString);
-            //JSONObject teachers = json.getJSONObject("Teachers");
-            JSONArray teachers = json.getJSONArray("Teachers");
-            for (int i = 0; i < teachers.length(); i++) {
-                JSONObject jTeacher = teachers.getJSONObject(i);
-                Teacher teacher = new Teacher(i, jTeacher.getString("first_name"), "English");
-//                teacher.setAddress(jTeacher.getString("address"));
-//                teacher.setCity(jTeacher.getString("city"));
-//                teacher.setState(jTeacher.getString("state"));
-//                teacher.setZip(jTeacher.getString("zip"));
-//                teacher.setPhone(jTeacher.getString("phone"));
-                mSchool.addTeacher(teacher);
+            if (jsonString.contains("\"Teachers\"")) {
+                JSONArray teachers = json.getJSONArray("Teachers");
+                for (int i = 0; i < teachers.length(); i++) {
+                    JSONObject jTeacher = teachers.getJSONObject(i);
+                    Teacher teacher = new Teacher(Integer.parseInt(jTeacher.getString("id").toString()));
+                    teacher.setFirstName(jTeacher.getString("first_name"));
+                    teacher.setLastName(jTeacher.getString("last_name"));
+                    teacher.setDepartment(jTeacher.getString("department"));
+                    teacher.setAddress(jTeacher.getString("address"));
+                    teacher.setCity(jTeacher.getString("city"));
+                    teacher.setState(jTeacher.getString("state"));
+                    teacher.setZip(jTeacher.getString("zip"));
+                    teacher.setPhone(jTeacher.getString("phone"));
+                    mSchool.addTeacher(teacher);
+                }
             }
-            //updateUI();
-        } catch (JSONException e) {
+            else if (jsonString.contains("\"Students\"")) {
+                JSONArray students = json.getJSONArray("Students");
+                for (int i = 0; i < students.length(); i++) {
+                    JSONObject jStudent = students.getJSONObject(i);
+                    Student student = new Student(Integer.parseInt(jStudent.getString("id").toString()));
+                    student.setFirstName(jStudent.getString("first_name"));
+                    student.setLastName(jStudent.getString("last_name"));
+                    student.setGrade(jStudent.getString("grade"));
+                    student.setAddress(jStudent.getString("address"));
+                    student.setCity(jStudent.getString("city"));
+                    student.setState(jStudent.getString("state"));
+                    student.setZip(jStudent.getString("zip"));
+                    student.setPhone(jStudent.getString("phone"));
+                    mSchool.addStudent(student);
+                }
+            }
+            else if (jsonString.contains("\"Sections\"")) {
+                JSONArray sections = json.getJSONArray("Sections");
+                for (int i = 0; i < sections.length(); i++) {
+                    JSONObject jSection = sections.getJSONObject(i);
+                    Section section = new Section(Integer.parseInt(jSection.getString("id").toString()));
+                    section.setName(jSection.getString("name"));
+                    mSchool.addSection(section);
+                }
+            }
+        }
+        catch (JSONException e) {
             e.printStackTrace();
         }
     }
@@ -156,9 +194,11 @@ public class SchoolFragment extends Fragment {
         mPrincipalTextView = (TextView)v.findViewById(R.id.school_principal_text_view);
         mAddressTextView = (TextView)v.findViewById(R.id.school_address_text_view);
         mPhoneTextView = (TextView)v.findViewById(R.id.school_phone_text_view);
+        mFrameLayout = (FrameLayout)v.findViewById(R.id.list_fragment_container);
+        mFrameLayout.setTag(mSchool.getId());
 
         mNameTextView.setText(mSchool.getName());
-        mPrincipalTextView.setText(mSchool.getPrincipal());
+        mPrincipalTextView.setText("Principal: " + mSchool.getPrincipal());
         mAddressTextView.setText(mSchool.getAddress() + ", " + mSchool.getCity() + ", " + mSchool.getState() + " " + mSchool.getZip());
         mPhoneTextView.setText(mSchool.getPhone());
 
@@ -192,34 +232,24 @@ public class SchoolFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadListFragment(mSelectedTab);
+        //loadListFragment(mSelectedTab);
     }
 
     private void loadListFragment(int tab) {
-        Fragment currentFragment = fm.findFragmentById(R.id.list_fragment_container);
         Fragment newFragment = null;
 
         switch (tab) {
-            case 0: if (mTeacherListFragment == null) {
-                        mTeacherListFragment = TeacherListFragment.newInstance(mSchool.getId());
-                    };
-                    newFragment = mTeacherListFragment;
+            case 0: newFragment = TeacherListFragment.newInstance(mSchool.getId());
                     break;
-            case 1: if (mStudentListFragment == null) {
-                        mStudentListFragment = StudentListFragment.newInstance(mSchool.getId());
-                    };
-                    newFragment = mStudentListFragment;
+            case 1: newFragment = StudentListFragment.newInstance(mSchool.getId());
                     break;
-            case 2: if (mSectionListFragment == null) {
-                        mSectionListFragment = SectionListFragment.newInstance(mSchool.getId());
-                    };
-                    newFragment = mSectionListFragment;
-                    break;
+            case 2: newFragment = SectionListFragment.newInstance(mSchool.getId());
+                break;
             default:
                     ;
         }
         if (newFragment != null) {
-            fm.beginTransaction()
+            getChildFragmentManager().beginTransaction()
                     .replace(R.id.list_fragment_container, newFragment)
                     .commit();
         }

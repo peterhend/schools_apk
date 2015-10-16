@@ -21,6 +21,7 @@ public class SectionListFragment extends Fragment {
     private School mSchool;
     private List<Section> mSections;
 
+    private TextView mTextView;
     private RecyclerView mRecyclerView;
     private SectionAdapter mSectionAdapter;
 
@@ -38,12 +39,15 @@ public class SectionListFragment extends Fragment {
         int schoolId = (int) getArguments().getSerializable(ARG_SCHOOL_ID);
         mSchool = District.get(getActivity()).getSchool(schoolId);
         mSections = mSchool.getSections();
-        getActivity().setTitle(mSchool.getName());
+        //getActivity().setTitle(mSchool.getName());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_section_list, container, false);
+//        mTextView = (TextView) view.findViewById(R.id.section_list_text_view);
+//        mTextView.setText("Section list for " + mSchool.getName());
+//        mTextView.setVisibility(View.INVISIBLE);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.section_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         loadList();

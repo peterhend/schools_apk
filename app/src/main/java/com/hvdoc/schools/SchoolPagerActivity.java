@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Pete on 10/9/2015.
  */
-public class SchoolPagerActivity extends AppCompatActivity {
+public class SchoolPagerActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
     private static final String EXTRA_SCHOOL_ID = "com.hvdoc.android.schools.school_id";
 
     private ViewPager mViewPager;
@@ -53,8 +53,27 @@ public class SchoolPagerActivity extends AppCompatActivity {
         for (int i = 0; i < mSchools.size(); i++) {
             if (mSchools.get(i).getId() == schoolId) {
                 mViewPager.setCurrentItem(i);
+                setTitle(mSchools.get(i).getName());
                 break;
             }
         }
+
+        mViewPager.addOnPageChangeListener(this);
+    }
+
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        setTitle(mSchools.get(position).getName());
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

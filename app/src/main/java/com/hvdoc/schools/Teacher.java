@@ -5,7 +5,8 @@ package com.hvdoc.schools;
  */
 public class Teacher {
     private int mId;
-    private String mName;
+    private String mFirstName;
+    private String mLastName;
     private String mDepartment;
     private String mAddress;
     private String mCity;
@@ -13,41 +14,75 @@ public class Teacher {
     private String mZip;
     private String mPhone;
 
-    public Teacher(int id, String name, String department) {
+    public Teacher(int id) {
         mId = id;
-        mName = name;
-        mDepartment = department;
     }
 
     public int getId() {
         return mId;
     }
 
-    public String getName() {
-        return mName;
+    public String getFirstName() {
+        return mFirstName;
+    }
+
+    public void setFirstName(String name) {
+        mFirstName = name;
+    }
+
+    public String getLastName() {
+        return mLastName;
+    }
+
+    public void setLastName(String name) {
+        mLastName = name;
     }
 
     public String getDepartment() {
         return mDepartment;
     }
 
+    public void setDepartment(String department) {
+        mDepartment = department;
+    }
+
     public String getAddress() {
         return mAddress;
+    }
+
+    public void setAddress(String address) {
+        mAddress = address;
     }
 
     public String getCity() {
         return mCity;
     }
 
+    public void setCity(String city) {
+        mCity = city;
+    }
+
     public String getState() {
         return mState;
+    }
+
+    public void setState(String state) {
+        mState = state;
     }
 
     public String getZip() {
         return mZip;
     }
 
+    public void setZip(String zip) {
+        mZip = zip;
+    }
+
     public String getPhone() {
         return mPhone;
+    }
+
+    public void setPhone(String phone) {
+        mPhone = phone;
     }
 }

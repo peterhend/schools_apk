@@ -18,9 +18,18 @@ public class School {
     private List<Teacher> mTeachers = new ArrayList<Teacher>();
     private List<Student> mStudents = new ArrayList<Student>();
     private List<Section> mSections = new ArrayList<Section>();
+    private int mListFragmentContainer;
 
-    public School() {
+    public School(int id) {
+        mId = id;
+    }
 
+    public int getListFragmentContainer() {
+        return mListFragmentContainer;
+    }
+
+    public void setListFragmentContainer(int listFragmentContainer) {
+        this.mListFragmentContainer = listFragmentContainer;
     }
 
     public String getAddress() {
@@ -41,10 +50,6 @@ public class School {
 
     public int getId() {
         return mId;
-    }
-
-    public void setId(int mId) {
-        this.mId = mId;
     }
 
     public String getName() {

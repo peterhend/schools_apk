@@ -7,9 +7,8 @@ public class Section {
     private int mId;
     private String mName;
 
-    public Section(int id, String name) {
+    public Section(int id) {
         mId = id;
-        mName = name;
     }
 
     public int getId() {
@@ -18,6 +17,10 @@ public class Section {
 
     public String getName() {
         return mName;
+    }
+
+    public void setName(String name) {
+        mName = name;
     }
 
 }

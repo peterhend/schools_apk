@@ -21,6 +21,7 @@ public class StudentListFragment extends Fragment {
     private School mSchool;
     private List<Student> mStudents;
 
+    private TextView mTextView;
     private RecyclerView mRecyclerView;
     private StudentAdapter mStudentAdapter;
 
@@ -38,12 +39,15 @@ public class StudentListFragment extends Fragment {
         int schoolId = (int) getArguments().getSerializable(ARG_SCHOOL_ID);
         mSchool = District.get(getActivity()).getSchool(schoolId);
         mStudents = mSchool.getStudents();
-        getActivity().setTitle(mSchool.getName());
+        //getActivity().setTitle(mSchool.getName());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_student_list, container, false);
+//        mTextView = (TextView) view.findViewById(R.id.student_list_text_view);
+//        mTextView.setText("Student list for " + mSchool.getName());
+//        mTextView.setVisibility(View.INVISIBLE);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.student_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         loadList();
@@ -69,7 +73,7 @@ public class StudentListFragment extends Fragment {
         public void bindStudent(Student student)
         {
             mStudent = student;
-            mNameTextView.setText(student.getName());
+            mNameTextView.setText(student.getLastName() + ", " + student.getFirstName());
             mGradeTextView.setText(student.getGrade());
         }
 
