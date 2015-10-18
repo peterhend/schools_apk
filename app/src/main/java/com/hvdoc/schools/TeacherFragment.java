@@ -16,7 +16,8 @@ public class TeacherFragment extends Fragment {
 
     private Teacher mTeacher;
 
-    private TextView mNameTextView;
+    private TextView mEmailTextView;
+    private TextView mPhoneTextView;
 
     public static TeacherFragment newInstance(int schoolId, int teacherId) {
         Bundle args = new Bundle();
@@ -38,9 +39,12 @@ public class TeacherFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getActivity().setTitle(mTeacher.getFirstName() + " " + mTeacher.getLastName());
         View v = inflater.inflate(R.layout.fragment_teacher, container, false);
-        mNameTextView = (TextView)v.findViewById(R.id.teacher_name_text_view);
-        mNameTextView.setText(mTeacher.getLastName() + ", " + mTeacher.getFirstName());
+        mPhoneTextView = (TextView)v.findViewById(R.id.teacher_phone_text_view);
+        mPhoneTextView.setText("Phone: " + mTeacher.getPhone());
+        mEmailTextView = (TextView)v.findViewById(R.id.teacher_email_text_view);
+        mEmailTextView.setText("Email: " + mTeacher.getEmail());
         return v;
     }
 

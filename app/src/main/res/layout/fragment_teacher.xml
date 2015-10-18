@@ -7,8 +7,13 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/teacher_name_text_view"
+        android:id="@+id/teacher_phone_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name"/>
+        android:text="Phone"/>
+    <TextView
+        android:id="@+id/teacher_email_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email"/>
 </LinearLayout>

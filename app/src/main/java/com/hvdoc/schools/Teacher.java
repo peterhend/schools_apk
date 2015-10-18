@@ -13,6 +13,7 @@ public class Teacher {
     private String mState;
     private String mZip;
     private String mPhone;
+    private String mEmail;
 
     public Teacher(int id) {
         mId = id;
@@ -84,5 +85,13 @@ public class Teacher {
 
     public void setPhone(String phone) {
         mPhone = phone;
+    }
+
+    public String getEmail() {
+        return mEmail;
+    }
+
+    public void setEmail(String email) {
+        mEmail = email;
     }
 }

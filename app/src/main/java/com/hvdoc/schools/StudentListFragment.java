@@ -1,6 +1,5 @@
 package com.hvdoc.schools;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -86,8 +85,8 @@ public class StudentListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = TeacherPagerActivity.newIntent(getActivity(), mSchool.getId(), mStudent.getId());
-            startActivity(intent);
+            //Intent intent = TeacherPagerActivity.newIntent(getActivity(), mSchool.getId(), mStudent.getId());
+            //startActivity(intent);
         }
     }
 

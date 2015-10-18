@@ -33,7 +33,6 @@ public class SchoolFragment extends Fragment {
 
     private School mSchool;
 
-    private TextView mNameTextView;
     private TextView mPrincipalTextView;
     private TextView mAddressTextView;
     private TextView mPhoneTextView;
@@ -153,6 +152,7 @@ public class SchoolFragment extends Fragment {
                     teacher.setState(jTeacher.getString("state"));
                     teacher.setZip(jTeacher.getString("zip"));
                     teacher.setPhone(jTeacher.getString("phone"));
+                    teacher.setEmail(jTeacher.getString("email"));
                     mSchool.addTeacher(teacher);
                 }
             }
@@ -190,14 +190,12 @@ public class SchoolFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_school, container, false);
-        mNameTextView = (TextView)v.findViewById(R.id.school_name_text_view);
         mPrincipalTextView = (TextView)v.findViewById(R.id.school_principal_text_view);
         mAddressTextView = (TextView)v.findViewById(R.id.school_address_text_view);
         mPhoneTextView = (TextView)v.findViewById(R.id.school_phone_text_view);
         mFrameLayout = (FrameLayout)v.findViewById(R.id.list_fragment_container);
         mFrameLayout.setTag(mSchool.getId());
 
-        mNameTextView.setText(mSchool.getName());
         mPrincipalTextView.setText("Principal: " + mSchool.getPrincipal());
         mAddressTextView.setText(mSchool.getAddress() + ", " + mSchool.getCity() + ", " + mSchool.getState() + " " + mSchool.getZip());
         mPhoneTextView.setText(mSchool.getPhone());

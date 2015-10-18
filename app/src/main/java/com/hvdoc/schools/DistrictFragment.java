@@ -31,7 +31,6 @@ import java.util.List;
  */
 public class DistrictFragment extends Fragment {
 
-    private TextView mNameTextView;
     private TextView mSuperintendentTextView;
 
     private TextView mAddressTextView;
@@ -116,7 +115,6 @@ public class DistrictFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_district, container, false);
 
-        mNameTextView = (TextView) v.findViewById(R.id.name_text_view);
         mSuperintendentTextView = (TextView) v.findViewById(R.id.superintendent_text_view);
         mAddressTextView = (TextView) v.findViewById(R.id.address_text_view);
         mPhoneTextView = (TextView) v.findViewById(R.id.phone_text_view);
@@ -165,10 +163,9 @@ public class DistrictFragment extends Fragment {
 
     private void updateUI() {
         List<School> schools = null;
-        //District district = District.get(getActivity());
 
         if (mDistrict != null) {
-            mNameTextView.setText(mDistrict.getName());
+            getActivity().setTitle(mDistrict.getName());
             mSuperintendentTextView.setText("Superintendent: " + mDistrict.getSuperintendent());
             mAddressTextView.setText(mDistrict.getAddress() + ", " + mDistrict.getCity() + ", " + mDistrict.getState() + " " + mDistrict.getZip());
             mPhoneTextView.setText(mDistrict.getPhone());
