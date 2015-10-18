@@ -39,7 +39,6 @@ public class TeacherFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getActivity().setTitle(mTeacher.getFirstName() + " " + mTeacher.getLastName());
         View v = inflater.inflate(R.layout.fragment_teacher, container, false);
         mPhoneTextView = (TextView)v.findViewById(R.id.teacher_phone_text_view);
         mPhoneTextView.setText("Phone: " + mTeacher.getPhone());

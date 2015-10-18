@@ -28,38 +28,7 @@ public class District {
     }
 
     private District(Context context){
-//        mName = "Name";
-//        mSuperintendent = "Superintendent";
-//        mAddress = "Address";
-//        mCity = "City";
-//        mState = "State";
-//        mZip = "Zip";
-//        mPhone = "Phone";
         mSchools = new ArrayList<>();
-//        for (int i = 0; i < 100; i++) {
-//            School school = new School();
-//            school.setId(i);
-//            school.setName("Craigside " + i);
-//            school.setPrincipal("Principal " + i);
-//            school.setAddress("15 Craigside Drive");
-//            school.setCity("New York");
-//            school.setState("NY");
-//            school.setZip("10002");
-//            school.setPhone("(646) 784-9254");
-//            for (int j = 1; j <= 100; j++) {
-//                Teacher teacher = new Teacher(j, "Teacher " + j, "English");
-//                school.addTeacher(teacher);
-//            }
-//            for (int j = 1; j <= 100; j++) {
-//                Student student = new Student(j, "Student " + j, "6");
-//                school.addStudent(student);
-//            }
-//            for (int j = 1; j <= 100; j++) {
-//                Section section = new Section(j, "Section " + j);
-//                school.addSection(section);
-//            }
-//            mSchools.add(school);
-//        }
     }
 
     public List<School> getSchools() {
