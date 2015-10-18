@@ -82,6 +82,7 @@ public class SectionListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
+            //Pete
             //Intent intent = TeacherPagerActivity.newIntent(getActivity(), mSchool.getId(), mSection.getId());
             //startActivity(intent);
         }
