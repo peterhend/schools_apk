@@ -14,18 +14,18 @@ import java.util.List;
 /**
  * Created by Pete on 10/9/2015.
  */
-public class TeacherPagerActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class SectionPagerActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
     private static final String EXTRA_SCHOOL_ID = "com.hvdoc.android.schools.school_id";
-    private static final String EXTRA_TEACHER_ID = "com.hvdoc.android.schools.teacher_id";
+    private static final String EXTRA_SECTION_ID = "com.hvdoc.android.schools.section_id";
 
     private ViewPager mViewPager;
     private School mSchool;
-    private List<Teacher> mTeachers;
+    private List<Section> mSections;
 
-    public static Intent newIntent(Context packageContext, int schoolId, int teacherId) {
-        Intent intent = new Intent(packageContext, TeacherPagerActivity.class);
+    public static Intent newIntent(Context packageContext, int schoolId, int sectionId) {
+        Intent intent = new Intent(packageContext, SectionPagerActivity.class);
         intent.putExtra(EXTRA_SCHOOL_ID, schoolId);
-        intent.putExtra(EXTRA_TEACHER_ID, teacherId);
+        intent.putExtra(EXTRA_SECTION_ID, sectionId);
         return intent;
     }
 
@@ -35,31 +35,31 @@ public class TeacherPagerActivity extends AppCompatActivity implements ViewPager
         setContentView(R.layout.detail_activity_pager);
 
         int schoolId = (int) getIntent().getSerializableExtra(EXTRA_SCHOOL_ID);
-        int teacherId = (int) getIntent().getSerializableExtra(EXTRA_TEACHER_ID);
+        int sectionId = (int) getIntent().getSerializableExtra(EXTRA_SECTION_ID);
 
         mViewPager = (ViewPager) findViewById(R.id.activity_detail_pager_view_pager);
 
         mSchool = District.get(this).getSchool(schoolId);
-        mTeachers = mSchool.getTeachers();
+        mSections = mSchool.getSections();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                Teacher teacher = mTeachers.get(position);
-                return TeacherFragment.newInstance(mSchool.getId(), teacher.getId());
+                Section section = mSections.get(position);
+                return SectionFragment.newInstance(mSchool.getId(), section.getId());
             }
 
             @Override
             public int getCount() {
-                return mTeachers.size();
+                return mSections.size();
             }
         });
 
-        for (int i = 0; i < mTeachers.size(); i++) {
-            if (mTeachers.get(i).getId() == teacherId) {
+        for (int i = 0; i < mSections.size(); i++) {
+            if (mSections.get(i).getId() == sectionId) {
                 mViewPager.setCurrentItem(i);
-                setTitle(mTeachers.get(i).getFirstName() + " " + mTeachers.get(i).getLastName());
+                setTitle(mSections.get(i).getName());
                 break;
             }
         }
@@ -73,7 +73,7 @@ public class TeacherPagerActivity extends AppCompatActivity implements ViewPager
 
     @Override
     public void onPageSelected(int i) {
-        setTitle(mTeachers.get(i).getFirstName() + " " + mTeachers.get(i).getLastName());
+        setTitle(mSections.get(i).getName());
     }
 
     @Override

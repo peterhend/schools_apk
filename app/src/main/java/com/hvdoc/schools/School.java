@@ -109,6 +109,24 @@ public class School {
         return null;
     }
 
+    public Section getSection(int id) {
+        for (Section section : mSections) {
+            if (section.getId() == id) {
+                return section;
+            }
+        }
+        return null;
+    }
+
+    public Student getStudent(int id) {
+        for (Student student : mStudents) {
+            if (student.getId() == id) {
+                return student;
+            }
+        }
+        return null;
+    }
+
     public List<Student> getStudents() {
         return mStudents;
     }

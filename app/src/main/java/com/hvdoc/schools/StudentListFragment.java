@@ -1,5 +1,6 @@
 package com.hvdoc.schools;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,9 +45,6 @@ public class StudentListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_student_list, container, false);
-//        mTextView = (TextView) view.findViewById(R.id.student_list_text_view);
-//        mTextView.setText("Student list for " + mSchool.getName());
-//        mTextView.setVisibility(View.INVISIBLE);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.student_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         loadList();
@@ -85,8 +83,8 @@ public class StudentListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            //Intent intent = TeacherPagerActivity.newIntent(getActivity(), mSchool.getId(), mStudent.getId());
-            //startActivity(intent);
+            Intent intent = StudentPagerActivity.newIntent(getActivity(), mSchool.getId(), mStudent.getId());
+            startActivity(intent);
         }
     }
 
