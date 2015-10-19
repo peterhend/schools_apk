@@ -1,5 +1,6 @@
 package com.hvdoc.schools;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,15 +24,31 @@ import java.util.List;
 public class DistrictFragment extends Fragment {
 
     private static final String TAG = "DistrictFragment";
+    private Callbacks mCallbacks;
 
     private TextView mSuperintendentTextView;
-
     private TextView mAddressTextView;
     private TextView mPhoneTextView;
     private RecyclerView mDistrictRecyclerView;
     private SchoolAdapter mAdapter;
 
     private District mDistrict;
+
+    public interface Callbacks {
+        void onSchoolSelected(School school);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mCallbacks = (Callbacks) activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -145,8 +162,9 @@ public class DistrictFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = SchoolPagerActivity.newIntent(getActivity(), mSchool.getId());
-            startActivity(intent);
+            //Intent intent = SchoolPagerActivity.newIntent(getActivity(), mSchool.getId());
+            //startActivity(intent);
+            mCallbacks.onSchoolSelected(mSchool);
         }
 
     }
