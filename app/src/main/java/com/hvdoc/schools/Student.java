@@ -5,6 +5,7 @@ package com.hvdoc.schools;
  */
 public class Student {
     private int mId;
+    private int mSchoolId;
     private String mFirstName;
     private String mLastName;
     private String mGrade;
@@ -20,6 +21,14 @@ public class Student {
 
     public int getId() {
         return mId;
+    }
+
+    public int getSchoolId() {
+        return mSchoolId;
+    }
+
+    public void setSchoolId(int schoolId) {
+        mSchoolId = schoolId;
     }
 
     public String getFirstName() {

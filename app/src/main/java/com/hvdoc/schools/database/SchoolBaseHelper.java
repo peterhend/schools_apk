@@ -37,6 +37,7 @@ public class SchoolBaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table " + TeacherTable.NAME + "(" +
                         " _id integer primary key autoincrement, " +
                         TeacherTable.Cols.ID + ", " +
+                        TeacherTable.Cols.SCHOOL_ID + ", " +
                         TeacherTable.Cols.FIRST_NAME + ", " +
                         TeacherTable.Cols.LAST_NAME + ", " +
                         TeacherTable.Cols.DEPARTMENT + ", " +
@@ -51,6 +52,7 @@ public class SchoolBaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table " + StudentTable.NAME + "(" +
                         " _id integer primary key autoincrement, " +
                         StudentTable.Cols.ID + ", " +
+                        StudentTable.Cols.SCHOOL_ID + ", " +
                         StudentTable.Cols.FIRST_NAME + ", " +
                         StudentTable.Cols.LAST_NAME + ", " +
                         StudentTable.Cols.GRADE + ", " +
@@ -65,6 +67,8 @@ public class SchoolBaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table " + SectionTable.NAME + "(" +
                         " _id integer primary key autoincrement, " +
                         SectionTable.Cols.ID + ", " +
+                        SectionTable.Cols.SCHOOL_ID + ", " +
+                        SectionTable.Cols.TEACHER_ID + ", " +
                         SectionTable.Cols.NAME + ")"
         );
     }

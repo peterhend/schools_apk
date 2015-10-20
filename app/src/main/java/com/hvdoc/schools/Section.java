@@ -5,6 +5,8 @@ package com.hvdoc.schools;
  */
 public class Section {
     private int mId;
+    private int mSchoolId;
+    private int mTeacherId;
     private String mName;
 
     public Section(int id) {
@@ -13,6 +15,22 @@ public class Section {
 
     public int getId() {
         return mId;
+    }
+
+    public int getSchoolId() {
+        return mSchoolId;
+    }
+
+    public void setSchoolId(int schoolId) {
+        mSchoolId = schoolId;
+    }
+
+    public int getTeacherId() {
+        return mTeacherId;
+    }
+
+    public void setTeacherId(int teacherId) {
+        mTeacherId = teacherId;
     }
 
     public String getName() {

@@ -24,6 +24,7 @@ public class SchoolDbSchema {
 
         public static final class Cols {
             public static final String ID = "id";
+            public static final String SCHOOL_ID = "school_id";
             public static final String FIRST_NAME = "first_name";
             public static final String LAST_NAME = "last_name";
             public static final String DEPARTMENT = "department";
@@ -41,6 +42,7 @@ public class SchoolDbSchema {
 
         public static final class Cols {
             public static final String ID = "id";
+            public static final String SCHOOL_ID = "school_id";
             public static final String FIRST_NAME = "first_name";
             public static final String LAST_NAME = "last_name";
             public static final String GRADE = "grade";
@@ -58,6 +60,8 @@ public class SchoolDbSchema {
 
         public static final class Cols {
             public static final String ID = "id";
+            public static final String SCHOOL_ID = "school_id";
+            public static final String TEACHER_ID = "teacher_id";
             public static final String NAME = "name";
         }
     }

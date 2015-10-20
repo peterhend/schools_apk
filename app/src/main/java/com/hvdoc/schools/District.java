@@ -64,7 +64,7 @@ public class District {
         mSchools.add(school);
 
         ContentValues values = getContentValues(school);
-        long returnVal = mDatabase.insert(SchoolTable.NAME, null, values);
+        mDatabase.insert(SchoolTable.NAME, null, values);
     }
 
     public School getSchool(int id) {
